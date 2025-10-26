@@ -1,8 +1,25 @@
--- definitions/documentation.md
 # GA4 E-commerce Analytics Pipeline Project
 
 ## Overview
-This Dataform project transforms raw Google Analytics 4 (GA4) e-commerce sample data into structured Bronze, Silver, and Gold layers for business reporting. It is designed to run regularly to provide updated monthly reports on traffic source performance.
+This Dataform project transforms raw Google Analytics 4 (GA4) e-commerce sample data into structured **Bronze**, **Silver**, and **Gold** layers for business reporting. It is designed to run regularly to provide updated monthly reports on traffic source performance.
+
+---
+
+## Data Lineage and Dependencies 📈
+
+Below is a screenshot of the Dataform execution graph, illustrating the direct dependencies between the project's data objects.
+
+<img width="1575" height="255" alt="image" src="https://github.com/user-attachments/assets/44b63d95-3551-451c-af9e-a06f9656f973" />
+
+### Dependency Explanation
+
+| Layer | Object Name | Dependency | Explanation |
+| :--- | :--- | :--- | :--- |
+| **Bronze** | `events_source` | **External Source** | This is a **declaration** referencing the public BigQuery table `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`. It has **no upstream dependencies** within the project. |
+| **Silver** | `purchase_traffic_source_medium` | $\rightarrow$ `events_source` | This table is built **directly from the Bronze layer**. It filters, cleans, and denormalizes the raw purchase events. |
+| **Gold** | `top_traffic_source_medium` | $\rightarrow$ `purchase_traffic_source_medium` | This final report table is built **directly from the Silver layer**. It aggregates the clean, denormalized purchase data monthly to calculate key business metrics. |
+
+---
 
 ## Data Lineage
 The pipeline follows a standard Medallion Architecture:
