@@ -1,8 +1,7 @@
 # config {
-
   "type": "declaration",
   "database": "bigquery-public-data",
   "schema": "ga4_obfuscated_sample_ecommerce",
-  "dataset": "ga4_obfuscated_sample_ecommerce",  // <-- FIX: Changed 'schema' to 'dataset'
-  "name": "events_*"                             // Important for the sharded table
+  "dataset": "ga4_obfuscated_sample_ecommerce",  
+  "name": "events_*"                             
 }

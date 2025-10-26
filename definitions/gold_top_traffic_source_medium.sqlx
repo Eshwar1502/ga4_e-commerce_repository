@@ -6,7 +6,6 @@
 -- Total number of purchased items.
 -- Average number of purchased items per purchase.
 
--- definitions/gold/top_traffic_source_medium.sqlx
 config {
   type: "table",
   schema: "gold", 
@@ -20,18 +19,14 @@ SELECT
   
   -- KPIs
   SUM(event_value_in_usd) AS total_purchased_value_usd, -- Purchased value in USD
-  COUNT(DISTINCT user_pseudo_id || CAST(ga_session_id AS STRING)) AS total_purchases_count, -- Volume/Total number of purchases (unique sessions with purchase)
   
-  -- Total items is not directly available, so we use count of purchase events as a proxy for volume/transaction count
-  -- Assuming one row = one transaction for 'purchase' event in the silver table.
-  COUNT(1) AS total_purchase_events,
+  COUNT(DISTINCT user_pseudo_id || CAST(ga_session_id AS STRING)) AS total_purchases_items, --Total number of purchased items.
   
-  -- Calculate Average items per purchase (approximated)
   -- Since item count is not in silver, we can't calculate 'items'. Instead, we calculate Avg Value per Transaction.
   SAFE_DIVIDE(SUM(event_value_in_usd), COUNT(DISTINCT user_pseudo_id || CAST(ga_session_id AS STRING))) AS avg_value_per_purchase_usd 
 
 FROM
-  ${ref("purchase_traffic_source_medium")}
+  ${ref("silver_purchase_traffic_source_medium")}
 GROUP BY 1, 2
 ORDER BY 
   total_purchased_value_usd DESC
