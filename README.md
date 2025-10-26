@@ -11,8 +11,10 @@ Below is a screenshot of the Dataform execution graph, illustrating the direct d
 
 <img width="1575" height="255" alt="image" src="https://github.com/user-attachments/assets/44b63d95-3551-451c-af9e-a06f9656f973" />
 
-### Dependency Explanation
+---
 
+### Dependency Explanation
+The pipeline follows a standard Medallion Architecture:
 | Layer | Object Name | Dependency | Explanation |
 | :--- | :--- | :--- | :--- |
 | **Bronze** | `events_source` | **External Source** | This is a **declaration** referencing the public BigQuery table `bigquery-public-data.ga4_obfuscated_sample_ecommerce.events_*`. It has **no upstream dependencies** within the project. |
