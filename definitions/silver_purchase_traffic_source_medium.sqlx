@@ -1,8 +1,19 @@
--- definitions/silver/purchase_traffic_source_medium.sqlx
+
+
+--  Silver / denormalized and clean data
+--  purchase_traffic_source_medium
+--  Filters purchases only.
+--  Most purchases have a traffic_source, this table prepares the data to build "top_traffic_source". Remove rows 
+-- containing deleted data marked with "(data deleted)".
+--  Not aggregated
+--  Proposed columns
+--  event_date, traffic_source.medium, user_pseudo_id, ga_session_id, event_value_in_usd
+
+
 config {
   type: "table",
   schema: "silver", 
-  name: "purchase_traffic_source_medium",
+  name: "silver_purchase_traffic_source_medium",
   description: "Filters purchase events, denormalizes, and cleans traffic source data."
 }
 
