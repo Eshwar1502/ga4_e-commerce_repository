@@ -17,16 +17,39 @@ config {
   description: "Filters purchase events, denormalizes, and cleans traffic source data."
 }
 
+
 SELECT
-  PARSE_DATE('%Y%m%d', event_date) AS event_date,
-  traffic_source.medium AS medium,
-  user_pseudo_id,
-  (SELECT value.int_value FROM unnest(event_params) WHERE key = 'ga_session_id') AS ga_session_id,
-  event_value_in_usd
+  PARSE_DATE('%Y%m%d', t.event_date) AS event_date,
+  t.traffic_source.medium AS medium,
+  t.user_pseudo_id,
+  (SELECT value.int_value FROM unnest(t.event_params) WHERE key = 'ga_session_id') AS ga_session_id,
+  t.event_value_in_usd AS transaction_revenue_usd, 
+  
+  -- Item-level details (one row per item)
+  item.quantity AS item_quantity,
+  item.item_revenue AS item_revenue_usd   
 FROM
-     ${ref("events_*")} AS t -- References the Bronze layer declaration
+  ${ref("events_*")} AS t 
+CROSS JOIN
+  UNNEST(t.items) AS item -- Unnesting the nested 'items' array
 WHERE
-  event_name = 'purchase'
-  AND traffic_source.medium IS NOT NULL
-  AND traffic_source.medium != '(data deleted)' -- Filter out deleted data
-  AND user_pseudo_id IS NOT NULL
+  t.event_name = 'purchase'
+  AND t.traffic_source.medium IS NOT NULL
+  AND t.traffic_source.medium != '(data deleted)' -- Filter out deleted data
+  AND t.user_pseudo_id IS NOT NULL
+
+
+
+-- SELECT
+--   PARSE_DATE('%Y%m%d', event_date) AS event_date,
+--   traffic_source.medium AS medium,
+--   user_pseudo_id,
+--   (SELECT value.int_value FROM unnest(event_params) WHERE key = 'ga_session_id') AS ga_session_id,
+--   event_value_in_usd
+-- FROM
+--      ${ref("events_*")} AS t -- References the Bronze layer declaration
+-- WHERE
+--   event_name = 'purchase'
+--   AND traffic_source.medium IS NOT NULL
+--   AND traffic_source.medium != '(data deleted)' -- Filter out deleted data
+--   AND user_pseudo_id IS NOT NULL

@@ -1,4 +1,4 @@
-# config {
+config {
   "type": "declaration",
   "database": "bigquery-public-data",
   "schema": "ga4_obfuscated_sample_ecommerce",
