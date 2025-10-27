@@ -41,23 +41,4 @@ ORDER BY
 
 
 
--- SELECT
---   -- Group by Year-Month for monthly aggregation
---   FORMAT_DATE('%Y-%m', event_date) AS purchase_month,
---   medium AS traffic_medium,
-  
---   -- KPIs
---   SUM(event_value_in_usd) AS total_purchased_value_usd, -- Purchased value in USD
-  
---   COUNT(DISTINCT user_pseudo_id || CAST(ga_session_id AS STRING)) AS total_purchases_items, --Total number of purchased events.
-  
-  
---   -- Since item count is not in silver, we can't calculate 'items'. Instead, we calculate Avg Value per Transaction.
---   SAFE_DIVIDE(SUM(event_value_in_usd), COUNT(DISTINCT user_pseudo_id || CAST(ga_session_id AS STRING))) AS avg_value_per_purchase_usd 
 
--- FROM
---   ${ref("silver_purchase_traffic_source_medium")}
--- GROUP BY 1, 2
--- ORDER BY 
-
---   total_purchased_value_usd DESC
