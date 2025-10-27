@@ -40,16 +40,4 @@ WHERE
 
 
 
--- SELECT
---   PARSE_DATE('%Y%m%d', event_date) AS event_date,
---   traffic_source.medium AS medium,
---   user_pseudo_id,
---   (SELECT value.int_value FROM unnest(event_params) WHERE key = 'ga_session_id') AS ga_session_id,
---   event_value_in_usd
--- FROM
---      ${ref("events_*")} AS t -- References the Bronze layer declaration
--- WHERE
---   event_name = 'purchase'
---   AND traffic_source.medium IS NOT NULL
---   AND traffic_source.medium != '(data deleted)' -- Filter out deleted data
---   AND user_pseudo_id IS NOT NULL
+
