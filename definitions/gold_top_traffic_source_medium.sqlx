@@ -19,8 +19,7 @@ SELECT
   medium AS traffic_medium,
   
   -- 1. Purchased value in USD 
-  SUM(transaction_revenue_usd) AS total_purchased_value_usd, 
-  -- SUM(item_revenue_usd) AS total_purchased_value_usd,
+  SUM(item_revenue_usd) AS total_purchased_value_usd,
   
   -- 2. Total number of purchased items 
   SUM(item_quantity) AS total_purchased_items,
