@@ -50,4 +50,3 @@ The pipeline follows a standard Medallion Architecture:
 ## Handover Notes
 * **Schema Convention:** All output tables are written to separate datasets: `bronze`, `silver`, and `gold`. Ensure these datasets exist in the target BigQuery project.
 * **Idempotency:** The tables use the `table` type, meaning they are rebuilt entirely on each run. For high volume, consider switching Silver and Gold to `incremental` with appropriate partition keys (`event_date` or `purchase_month`).
-* **Missing Metric:** Due to source data simplification in the Silver layer, the "Total number of purchased items" is approximated or replaced by "Average Value per Purchase." If item count is required, the Silver query must be updated to unnest/extract item details from the source.
